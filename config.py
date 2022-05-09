@@ -23,7 +23,12 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    pass
+    uri = os.getenv('DATABASE_URL')
+    if uri and uri.startswith('postgres://'):
+        uri = uri.replace('postgres://', 'postgresql://', 1)
+
+    SQLALCHEMY_DATABASE_URI = uri
+
 
 
 class TestConfig(Config):
@@ -52,7 +57,7 @@ config_options = {
 
 #  email configurations
 MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 587
+MAIL_PORT = 456
 MAIL_USE_TLS = True
 MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
 MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
